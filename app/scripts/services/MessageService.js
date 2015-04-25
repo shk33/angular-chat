@@ -3,11 +3,11 @@
 (function (angular) {
   'use strict';
 
-  angular.module('angularApp').service('MessageService', function(FBURL) {
+  angular.module('angularApp').service('MessageService', function(FBURL, $q) {
     var messageRef = new Firebase(FBURL).child('messages');
     return {
       childAdded: function childAdded(limitNuber, cb) {
-        messageRef.limit(limitNuber).on('child_added', function (snapshot) {
+        messageRef.startAt().limit(limitNuber).on('child_added', function (snapshot) {
           var val = snapshot.val();
           cb.call(this, {
             user: val.user,
@@ -23,6 +23,34 @@
 
       off: function turnMessagesOff() {
         messageRef.off();
+      },
+
+      pageNext: function pageNext (key, numberOfItems) {
+        var defered  = $q.defer();
+        var messages = [] ;
+        messageRef.startAt(null, key).limit(numberOfItems).once('value', function(snapshot) {
+          snapshot.forEach(function (snapItem) {
+            var itemVal = snapshot.val();
+            itemVal.key = snapItem.key();
+            messages.push(itemVal);
+          });
+          defered.resolve();
+        });
+        return defered.promise;
+      },
+
+      pageBack: function pageBack (key, numberOfItems) {
+        var defered  = $q.defer();
+        var messages = [] ;
+        messageRef.endAt(null, key).limit(numberOfItems).once('value', function(snapshot) {
+          snapshot.forEach(function (snapItem) {
+            var itemVal = snapshot.val();
+            itemVal.key = snapItem.key();
+            messages.push(itemVal);
+          });
+          defered.resolve();
+        });
+        return defered.promise;
       }
     };
   });

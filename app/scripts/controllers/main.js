@@ -33,4 +33,20 @@ angular.module('angularApp')
       MessageService.off();
     };
 
+    $scope.pageNext = function () {
+      var lastItem = $scope.messages[$scope.messages.length -1 ];
+      MessageService.pageNext(lastItem.key, 10).then(function(messages) {
+        $scope.messages = messages;
+        console.log(messages);
+      });
+    };
+
+    $scope.pageBack = function () {
+      var lastItem = $scope.messages[0];
+      MessageService.pageBack(lastItem.key, 10).then(function(messages) {
+        $scope.messages = messages;
+        console.log(messages);
+      });
+    };
+
   });
