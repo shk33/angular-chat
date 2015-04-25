@@ -28,4 +28,5 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+  .constant('FBURL', 'https://glowing-fire-3651.firebaseio.com/');
