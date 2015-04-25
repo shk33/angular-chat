@@ -1,7 +1,7 @@
-# angular
+# Firebase and Angular
 
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
-version 0.11.1.
+This toy project is for learning the basics of angular js and firebase.
+Following the "Real-Time Web Apps with Angular JS and Firebase" course from http://tutsplus.com.
 
 ## Build & development
 
