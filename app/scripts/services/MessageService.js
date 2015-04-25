@@ -6,8 +6,8 @@
   angular.module('angularApp').service('MessageService', function(FBURL) {
     var messageRef = new Firebase(FBURL).child('messages');
     return {
-      childAdded: function childAdded(cb) {
-        messageRef.on('child_added', function (snapshot) {
+      childAdded: function childAdded(limitNuber, cb) {
+        messageRef.limit(limitNuber).on('child_added', function (snapshot) {
           var val = snapshot.val();
           cb.call(this, {
             user: val.user,
