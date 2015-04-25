@@ -8,9 +8,28 @@
  * Controller of the angularApp
  */
 angular.module('angularApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, $timeout) {
     var rootRef  = new Firebase("https://glowing-fire-3651.firebaseio.com/");
     var childRef = rootRef.child('message');
+
+    childRef.on('value',function(snapshot) {
+      $timeout(function () {
+        var snapshotVal = snapshot.val();
+        console.log(snapshotVal);
+        $scope.message = snapshotVal;
+      });
+    });
+
+    $scope.$watch('message.text',function(newVal) {
+      //Initially the newVal is undefined and we don't want this value
+      //to be pushed to firebase
+      if (!newVal) {
+        return;
+      }
+      childRef.update({
+        text: newVal
+      });
+    });
 
     // Create new
     $scope.setMessage = function () {
