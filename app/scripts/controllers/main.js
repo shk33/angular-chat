@@ -36,6 +36,12 @@ angular.module('angularApp')
       });
     });
 
+    messagesRef.on('child_removed',function(snapshot) {
+      $timeout(function () {
+          deleteMessageByKey(snapshot.key());
+      });
+    });
+
     function findMessageByKey (key) {
       var messageFound = null;
       for (var i = 0; i < $scope.messages.length; i++) {
@@ -47,6 +53,16 @@ angular.module('angularApp')
       }
 
       return messageFound;
+    }
+
+    function deleteMessageByKey (key) {
+      for (var i = 0; i < $scope.messages.length; i++) {
+        var currentMessage = $scope.messages[i];
+        if (currentMessage.key === key){
+          $scope.messages.splice(i, 1);
+          break;
+        }
+      }
     }
 
     $scope.sendMessage = function () {
