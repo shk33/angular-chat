@@ -10,45 +10,25 @@
 angular.module('angularApp')
   .controller('MainCtrl', function ($scope, $timeout) {
     var rootRef  = new Firebase("https://glowing-fire-3651.firebaseio.com/");
-    var childRef = rootRef.child('message');
+    var messagesRef = rootRef.child('messages');
 
-    childRef.on('value',function(snapshot) {
+    $scope.currentUser = null;
+    $scope.currentText = null;
+
+    messagesRef.on('value',function(snapshot) {
       $timeout(function () {
         var snapshotVal = snapshot.val();
-        console.log(snapshotVal);
-        $scope.message = snapshotVal;
+        $scope.messages = snapshotVal;
       });
     });
 
-    $scope.$watch('message.text',function(newVal) {
-      //Initially the newVal is undefined and we don't want this value
-      //to be pushed to firebase
-      if (!newVal) {
-        return;
-      }
-      childRef.update({
-        text: newVal
-      });
-    });
+    $scope.sendMessage = function () {
+      var newMessage = {
+        user: $scope.currentUser,
+        text: $scope.currentText
+      };
 
-    // Create new
-    $scope.setMessage = function () {
-      childRef.set({
-        user: 'Bob',
-        text: 'Hi'
-      });
-    };
-
-    //Update
-    $scope.updateMessage = function () {
-      childRef.update({
-        text: 'Bye'
-      });
-    };
-
-    //Delete
-    $scope.deleteMessage = function () {
-      childRef.remove();
+      messagesRef.push(newMessage);
     };
 
   });

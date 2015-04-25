@@ -1,25 +1,18 @@
 <div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+  <div ng-repeat="message in messages">
+    {{ message.user }} - {{ message.text }}
+  </div>
 </div>
 
 <div class="row marketing">
-
-  <input type="text" class="form-control" ng-model="message.text" />
-
-  <button type="button" 
-          class="btn btn-success"
-          ng-click="setMessage()">Set Message</button>
-
-  <button type="button" 
-          class="btn btn-warning"
-          ng-click="updateMessage()">Update Message</button>
-
-  <button type="button" 
-          class="btn btn-danger"
-          ng-click="deleteMessage()">Remove Message</button>
+  <input type="text" class="form-control" ng-model="currentUser">
+  <div class="input-group">
+    <input type="text" class="form-control" ng-model="currentText">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="sendMessage()">
+          Send
+        </button>
+      </span>
+    </input>
+  </div>
 </div>
