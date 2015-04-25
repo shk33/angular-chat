@@ -9,9 +9,12 @@
  */
 angular.module('angularApp')
   .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+    var rootRef  = new Firebase("https://glowing-fire-3651.firebaseio.com/");
+
+    $scope.setMessage = function () {
+      rootRef.child('message').set({
+        user: 'Bob',
+        text: 'Hi'
+      });
+    };
   });
